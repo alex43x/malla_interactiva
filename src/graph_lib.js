@@ -1,527 +1,423 @@
-// FIX: los colores que tiene ahora son horribles
-const COLORS = {
-  TITLE_BACKGROUND: "transparent",
-  TITLE_BORDER: "transparent",
-  TITLE_TEXT: "#27272a",
+// ================= CONSTANTES DE DIMENSIONES =================
 
-  NODE_BACKGROUND: "#ffffff",
-  NODE_BORDER: "#b4b1ba",
-  NODE_TEXT: "#27272a",
-
-  HOVER_PRIMARY_BACKGROUND: "#f5a191",
-  HOVER_PRIMARY_BORDER: "#f1a262",
-  HOVER_PRIMARY_TEXT: "#27272a",
-
-  HOVER_PARENT_BACKGROUND: "#aca1cf",
-  HOVER_PARENT_BORDER: "#b9aeda",
-  HOVER_PARENT_TEXT: "#27272a",
-
-  HOVER_CHILD_BACKGROUND: "#90b99f",
-  HOVER_CHILD_BORDER: "#9dc6ac",
-  HOVER_CHILD_TEXT: "#27272a",
-
-  EDGE_NORMAL: "#b4b1ba",
-  EDGE_HOVER: "#f5a191",
-  EDGE_PARENT: "#aca1cf",
-  EDGE_CHILD: "#90b99f",
-  EDGE_OPACITY: 0.7,
-};
-
-// TODO: hacer que se puedan cambiar las opciones
 const DIMENSIONS = {
-  SEMESTER_WIDTH: 300,
-  TITLE_Y_POSITION: -180,
-  NODE_START_Y: -60,
-  NODE_SPACING_Y: 180,
-  NODE_MARGIN: 12,
+  SEMESTER_WIDTH: 300, // Ancho asignado por semestre
+  NODE_START_Y: 80, // Posición vertical inicial de los nodos
+  NODE_SPACING_Y: 90, // Separación vertical entre nodos
+  NODE_MARGIN: 10, // Margen interno de los nodos
 };
+
+// ================= CONSTANTES DE COLORES =================
+
+const COLORS = {
+  NODE_TEXT: "#1f2937",
+  NODE_BG: "#f9fafb",
+  NODE_BORDER: "#6b7280",
+  NODE_HIGHLIGHT_BG: "#fef3c7",
+  NODE_HIGHLIGHT_BORDER: "#f59e0b",
+  NODE_CHILD_BG: "#dbeafe",
+  NODE_CHILD_BORDER: "#3b82f6",
+  EDGE_NORMAL: "#9ca3af",
+  EDGE_HOVER: "#111827",
+  EDGE_OPACITY: 0.8,
+};
+
+// ================= CONSTANTES DE FUENTES =================
 
 const FONTS = {
-  TITLE_SIZE: 18,
-  TITLE_FACE: "Arial, sans-serif",
-  NODE_SIZE: 13,
-  NODE_FACE: "Arial, sans-serif",
-  HOVER_SIZE: 14,
+  NODE_SIZE: 14,
+  NODE_FACE: "Inter, Arial, sans-serif",
 };
 
-const ANIMATION = {
-  TOOLTIP_DELAY: 200,
-  FIT_DURATION: 800,
+// ============== CONFIGURACIÓN BASE PARA NODOS Y ARISTAS ==============
+
+const NODE_COMMON_CONFIG = {
+  shape: "box",
+  fixed: true,
+  physics: false,
+  margin: DIMENSIONS.NODE_MARGIN,
+  font: {
+    size: FONTS.NODE_SIZE,
+    face: FONTS.NODE_FACE,
+    color: COLORS.NODE_TEXT,
+  },
+  borderWidth: 2,
+  color: {
+    background: COLORS.NODE_BG,
+    border: COLORS.NODE_BORDER,
+    highlight: {
+      background: COLORS.NODE_HIGHLIGHT_BG,
+      border: COLORS.NODE_HIGHLIGHT_BORDER,
+    },
+  },
 };
 
-function renderGraph(data, elementId) {
+const EDGES_COMMON_CONFIG = {
+  arrows: "to",
+  color: {
+    color: COLORS.EDGE_NORMAL,
+    opacity: COLORS.EDGE_OPACITY,
+    highlight: COLORS.EDGE_HOVER,
+  },
+  width: 1.5,
+  hoverWidth: 3,
+};
+
+const SEMESTERS_TITLE_STYLE = {
+  y: 20,
+  fixed: true,
+  physics: false,
+  font: {
+    size: 18,
+    bold: true,
+    color: "#374151",
+  },
+  shape: "text",
+};
+
+// ================= ESTILOS DE NODOS =================
+
+const NODE_STYLE_BASE = {
+  font: {
+    color: COLORS.NODE_TEXT,
+    bold: false,
+    size: FONTS.NODE_SIZE,
+  },
+  borderWidth: 2,
+  opacity: 1,
+};
+
+const NODE_STYLE_DEFAULT = {
+  color: {
+    background: COLORS.NODE_BG,
+    border: COLORS.NODE_BORDER,
+  },
+  ...NODE_STYLE_BASE,
+};
+
+const NODE_STYLE_DEFAULT_FADED = {
+  opacity: 0.2,
+};
+
+const NODE_STYLE_HOVER = {
+  color: {
+    background: COLORS.NODE_HIGHLIGHT_BG,
+    border: COLORS.NODE_HIGHLIGHT_BORDER,
+  },
+  font: {
+    ...NODE_STYLE_BASE.font,
+    bold: true,
+    size: FONTS.NODE_SIZE + 2,
+  },
+  borderWidth: 3,
+  opacity: 1,
+};
+
+const NODE_STYLE_PARENT = {
+  color: {
+    background: COLORS.NODE_HIGHLIGHT_BG,
+    border: COLORS.NODE_HIGHLIGHT_BORDER,
+  },
+  font: {
+    ...NODE_STYLE_BASE.font,
+    bold: true,
+  },
+  borderWidth: 3,
+  opacity: 1,
+};
+
+const NODE_STYLE_CHILD = {
+  color: {
+    background: COLORS.NODE_CHILD_BG,
+    border: COLORS.NODE_CHILD_BORDER,
+  },
+  font: {
+    ...NODE_STYLE_BASE.font,
+    bold: true,
+  },
+  borderWidth: 3,
+  opacity: 1,
+};
+
+// ================= ESTILOS DE ARISTAS (EDGES) =================
+
+const EDGE_STYLE_DEFAULT = {
+  color: COLORS.EDGE_NORMAL,
+  opacity: COLORS.EDGE_OPACITY,
+  width: 1.5,
+  hidden: false,
+};
+
+const EDGE_STYLE_HOVER = {
+  color: COLORS.EDGE_HOVER,
+  opacity: 1,
+  width: 2.5,
+};
+
+const EDGE_STYLE_PARENT = {
+  color: COLORS.NODE_HIGHLIGHT_BORDER,
+  opacity: 1,
+  width: 3,
+};
+
+const EDGE_STYLE_CHILD = {
+  color: COLORS.NODE_CHILD_BORDER,
+  opacity: 1,
+  width: 3,
+};
+
+// ================= VARIABLES GLOBALES =================
+
+let allSubjects = {};
+let nodes;
+let edges;
+let network;
+let semestersCount = 0;
+
+// ===================== PUBLIC API =====================
+
+// Prepara los datos del grafo: nodos y aristas
+function prepareGraphData(data) {
+  semestersCount = data.career.totalSemestres;
+
+  const subjectsBySemester = _groupSubjectsBySemester(
+    data.subjects,
+    semestersCount,
+  );
+  const semesterTitles = _createSemesterTitles();
+
+  const created = _createSubjectNodes(subjectsBySemester);
+  allSubjects = created.allSubjects;
+
+  nodes = new vis.DataSet([...semesterTitles, ...created.nodesArray]);
+  edges = new vis.DataSet(_createEdges(allSubjects));
+}
+
+// Renderiza el grafo en el elemento con el ID dado
+function renderGraph(elementId) {
   const element = document.getElementById(elementId);
   if (!element) return;
 
-  const semestersCount = Object.keys(data.semesters).length;
+  const options = _createVisOptions();
 
-  // Crear nodos para títulos de semestres
-  const semesterTitles = createSemesterTitles(semestersCount);
-
-  // Crear nodos y mapa de todas las materias
-  const { allSubjects, nodesArray } = createSubjectNodes(
-    data.semesters,
-    semestersCount,
-  );
-
-  // Combinar todos los nodos
-  const nodes = new vis.DataSet([...semesterTitles, ...nodesArray]);
-
-  // Crear aristas entre nodos
-  const edges = new vis.DataSet(createEdges(allSubjects));
-
-  // Configurar opciones de vis.js para la red
-  const optionsVis = createVisOptions(semestersCount);
-
-  // Inicializar red
-  const network = new vis.Network(element, { nodes, edges }, optionsVis);
-
-  // Funciones auxiliares para padres e hijos
-  const getAllParents = createGetAllParents(allSubjects);
-  const getAllChildren = createGetAllChildren(allSubjects);
-
-  // Manejo de eventos para hover, blur y click
-  setupNetworkEvents(
-    network,
-    allSubjects,
-    nodes,
-    edges,
-    getAllParents,
-    getAllChildren,
-  );
-
-  // Ajustar vista inicial y doble click para resetear zoom
-  setupInitialView(network, semestersCount);
+  network = new vis.Network(element, { nodes, edges }, options);
+  _setupNetworkEvents(network, allSubjects, nodes, edges);
   network.fit();
 }
 
-// --- FUNCIONES AUXILIARES ---
+// ================= FUNCIONES AUXILIARES =================
 
-// Crear nodos de títulos de semestres
-function createSemesterTitles(semestersCount) {
-  const titles = [];
-  for (let sem = 1; sem <= semestersCount; sem++) {
-    titles.push({
-      id: -sem,
-      label: `Semestre ${sem}`,
-      group: "title",
-      fixed: { x: true, y: true },
-      physics: false,
-      x: (sem - 1) * DIMENSIONS.SEMESTER_WIDTH,
-      y: DIMENSIONS.TITLE_Y_POSITION,
-      font: {
-        size: FONTS.TITLE_SIZE,
-        color: COLORS.TITLE_TEXT,
-        face: FONTS.TITLE_FACE,
-        bold: true,
-        vadjust: 0,
-      },
-    });
-  }
-  return titles;
-}
-
-// Crear nodos de materias y mapa para acceso rápido
-function createSubjectNodes(semesters, semestersCount) {
-  const allSubjects = {};
+// Crea nodos de materias organizados por semestre
+function _createSubjectNodes(semesters) {
+  const allSubjectsLocal = {};
   const nodesArray = [];
 
   for (let sem = 1; sem <= semestersCount; sem++) {
-    const semesterSubjects = semesters[sem];
-    const subjectIds = Object.keys(semesterSubjects);
-
-    // Ordenar materias por nombre
-    subjectIds.sort((a, b) =>
-      semesterSubjects[a].name.localeCompare(semesterSubjects[b].name),
+    const subjects = semesters[sem];
+    const ids = Object.keys(subjects).sort((a, b) =>
+      subjects[a].name.localeCompare(subjects[b].name),
     );
 
     const xBase = (sem - 1) * DIMENSIONS.SEMESTER_WIDTH;
 
-    for (let i = 0; i < subjectIds.length; i++) {
-      const subjectId = subjectIds[i];
-      const subject = semesterSubjects[subjectId];
+    ids.forEach((id, i) => {
+      const subject = subjects[id];
 
-      allSubjects[subjectId] = {
+      allSubjectsLocal[id] = {
         ...subject,
-        sem: sem,
+        sem,
+        pre: subject.prerequisites || [],
       };
 
-      const y = DIMENSIONS.NODE_START_Y + i * DIMENSIONS.NODE_SPACING_Y;
-
+      // Usar configuración común, añadiendo propiedades específicas por nodo
       nodesArray.push({
-        id: subjectId,
+        id,
         label: subject.name,
-        // title: "",
         group: `sem${sem}`,
-        shape: "box",
         x: xBase,
-        y: y,
-        fixed: { x: true, y: true },
-        physics: false,
-        margin: DIMENSIONS.NODE_MARGIN,
-        font: {
-          size: FONTS.NODE_SIZE,
-          color: COLORS.NODE_TEXT,
-          face: FONTS.NODE_FACE,
-        },
-        borderWidth: 2,
+        y: DIMENSIONS.NODE_START_Y + i * DIMENSIONS.NODE_SPACING_Y,
+        ...NODE_COMMON_CONFIG,
+      });
+    });
+  }
+
+  return { allSubjects: allSubjectsLocal, nodesArray };
+}
+
+// Crea aristas entre materias según pre-requisitos
+function _createEdges(allSubjectsLocal) {
+  const edgesArray = [];
+
+  for (const [id, subject] of Object.entries(allSubjectsLocal)) {
+    for (const pre of subject.pre) {
+      edgesArray.push({
+        from: pre,
+        to: id,
+        ...EDGES_COMMON_CONFIG,
       });
     }
   }
 
-  return { allSubjects, nodesArray };
-}
-
-// Crear aristas basadas en prerequisitos
-function createEdges(allSubjects) {
-  const edgesArray = [];
-  for (const [subjectId, subject] of Object.entries(allSubjects)) {
-    const prerequisites = subject.pre;
-    if (prerequisites && prerequisites.length) {
-      for (const preId of prerequisites) {
-        edgesArray.push({
-          from: preId,
-          to: subjectId,
-          arrows: "to",
-          color: {
-            color: COLORS.EDGE_NORMAL,
-            opacity: COLORS.EDGE_OPACITY,
-            highlight: COLORS.EDGE_HOVER,
-          },
-        });
-      }
-    }
-  }
   return edgesArray;
 }
 
-// Crear configuración de opciones para vis.js
-function createVisOptions(semestersCount) {
-  const options = {
-    physics: false,
+// Crea los títulos para cada semestre
+function _createSemesterTitles() {
+  const titles = [];
+
+  for (let i = 1; i <= semestersCount; i++) {
+    titles.push({
+      id: `title-sem-${i}`,
+      label: `Semestre ${i}`,
+      x: (i - 1) * DIMENSIONS.SEMESTER_WIDTH,
+      ...SEMESTERS_TITLE_STYLE,
+    });
+  }
+
+  return titles;
+}
+
+// Opciones para la visualización de vis.js
+function _createVisOptions() {
+  return {
     interaction: {
       hover: true,
-      multiselect: false,
-      navigationButtons: true,
+      dragView: true,
       zoomView: true,
-      tooltipDelay: ANIMATION.TOOLTIP_DELAY,
     },
-    groups: {
-      title: {
-        color: {
-          background: COLORS.TITLE_BACKGROUND,
-          border: COLORS.TITLE_BORDER,
-          highlight: {
-            background: COLORS.TITLE_BACKGROUND,
-            border: COLORS.TITLE_BORDER,
+    physics: false,
+    layout: { hierarchical: false },
+    groups: Object.fromEntries(
+      Array.from({ length: semestersCount }, (_, i) => [
+        `sem${i + 1}`,
+        {
+          color: {
+            background: COLORS.NODE_BG,
+            border: COLORS.NODE_BORDER,
+            highlight: {
+              background: COLORS.NODE_HIGHLIGHT_BG,
+              border: COLORS.NODE_HIGHLIGHT_BORDER,
+            },
           },
+          font: { color: COLORS.NODE_TEXT },
         },
-        font: {
-          size: FONTS.TITLE_SIZE,
-          color: COLORS.TITLE_TEXT,
-          face: FONTS.TITLE_FACE,
-          bold: true,
-          vadjust: 0,
-        },
-        shape: "text",
-        margin: 8,
-      },
-    },
-    edges: {
-      arrows: {
-        to: {
-          enabled: true,
-          scaleFactor: 1.5,
-          type: "arrow",
-        },
-      },
-      color: {
-        color: COLORS.EDGE_NORMAL,
-        opacity: COLORS.EDGE_OPACITY,
-        highlight: COLORS.EDGE_HOVER,
-      },
-      width: 2,
-      hoverWidth: 2.5,
-    },
-    nodes: {
-      borderWidth: 2,
-      borderWidthSelected: 3,
-      font: {
-        face: FONTS.NODE_FACE,
-        color: COLORS.NODE_TEXT,
-      },
-      shapeProperties: { useBorderWithImage: true },
-      shadow: {
-        enabled: true,
-        color: "rgba(0,0,0,0.1)",
-        size: 5,
-        x: 2,
-        y: 2,
-      },
-    },
-  };
-
-  // Configuraciones para todos los grupos (semestres)
-  for (let i = 1; i <= semestersCount; i++) {
-    options.groups[`sem${i}`] = {
-      color: {
-        background: COLORS.NODE_BACKGROUND,
-        border: COLORS.NODE_BORDER,
-        highlight: {
-          background: COLORS.HOVER_PARENT_BACKGROUND,
-          border: COLORS.HOVER_PARENT_BORDER,
-        },
-        hover: {
-          background: COLORS.NODE_BACKGROUND,
-          border: COLORS.NODE_BORDER,
-        },
-      },
-      shape: "box",
-      font: { color: COLORS.NODE_TEXT },
-    };
-  }
-
-  return options;
-}
-
-// Crear función para obtener todos los padres (prerequisitos) recursivamente
-function createGetAllParents(allSubjects) {
-  return function getAllParents(nodeId, visited = new Set()) {
-    if (visited.has(nodeId)) return [];
-    visited.add(nodeId);
-
-    const parents = [];
-    const subject = allSubjects[nodeId];
-
-    if (subject && subject.pre) {
-      for (const parentId of subject.pre) {
-        if (!parents.includes(parentId)) {
-          parents.push(parentId);
-          parents.push(...getAllParents(parentId, visited));
-        }
-      }
-    }
-    return [...new Set(parents)];
+      ]),
+    ),
   };
 }
 
-// Crear función para obtener todos los hijos recursivamente
-function createGetAllChildren(allSubjects) {
-  return function getAllChildren(nodeId, visited = new Set()) {
-    if (visited.has(nodeId)) return [];
-    visited.add(nodeId);
+// ================= EVENTOS =================
 
-    const children = [];
-    for (const [subjectId, subject] of Object.entries(allSubjects)) {
-      if (
-        subject.pre &&
-        subject.pre.includes(nodeId) &&
-        !children.includes(subjectId)
-      ) {
-        children.push(subjectId);
-        children.push(...getAllChildren(subjectId, visited));
+// Configura eventos para el grafo (hover y blur)
+function _setupNetworkEvents(net, allSubs, nodesDs, edgesDs) {
+  net.on("hoverNode", (params) => {
+    const id = params.node;
+    const parents = _getAllParents(id, allSubs);
+    const children = _getDirectChildren(id, allSubs);
+    const relatedNodes = new Set([id, ...parents, ...children]);
+
+    // Preparar todos los updates de nodos
+    const nodeUpdates = nodesDs.map((node) => {
+      if (node.id === id) {
+        return { id: node.id, ...NODE_STYLE_HOVER };
+      } else if (parents.has(node.id)) {
+        return { id: node.id, ...NODE_STYLE_PARENT };
+      } else if (children.has(node.id)) {
+        return { id: node.id, ...NODE_STYLE_CHILD };
+      } else {
+        return { id: node.id, ...NODE_STYLE_DEFAULT_FADED };
       }
-    }
-    return [...new Set(children)];
-  };
-}
+    });
 
-// Configurar eventos para la red (hover, blur, click)
-function setupNetworkEvents(
-  network,
-  allSubjects,
-  nodes,
-  edges,
-  getAllParents,
-  getAllChildren,
-) {
-  let currentHoverNode = null;
-  let highlightedNodes = [];
+    // Preparar todas las actualizaciones de estilos de aristas
+    const edgeUpdates = edgesDs.map((edge) => {
+      const fromInRelated = relatedNodes.has(edge.from);
+      const toInRelated = relatedNodes.has(edge.to);
 
-  // Guardar estilos originales para restaurar
-  const originalNodeStyles = {};
-  const originalEdgeStyles = {};
-
-  // Al crear nodos y edges, guardamos sus estilos originales
-  nodes.forEach((node) => {
-    originalNodeStyles[node.id] = {
-      color: node.color || null,
-      font: node.font || null,
-      borderWidth: node.borderWidth || 2,
-    };
-  });
-  edges.forEach((edge) => {
-    originalEdgeStyles[edge.id] = {
-      color: edge.color || {
-        color: COLORS.EDGE_NORMAL,
-        opacity: COLORS.EDGE_OPACITY,
-      },
-      width: edge.width || 2,
-    };
-  });
-
-  network.on("hoverNode", (params) => {
-    const nodeId = params.node;
-    if (nodeId < 0) return;
-    if (nodeId === currentHoverNode) return;
-    currentHoverNode = nodeId;
-
-    const parents = getAllParents(nodeId);
-    const children = getAllChildren(nodeId);
-    const allRelatedNodes = [nodeId, ...parents, ...children];
-    highlightedNodes = allRelatedNodes;
-
-    const nodeUpdates = [];
-    const edgeUpdates = [];
-
-    for (const relatedNodeId of allRelatedNodes) {
-      if (relatedNodeId === nodeId) {
-        nodeUpdates.push({
-          id: relatedNodeId,
-          color: {
-            background: COLORS.HOVER_PRIMARY_BACKGROUND,
-            border: COLORS.HOVER_PRIMARY_BORDER,
-          },
-          font: {
-            color: COLORS.HOVER_PRIMARY_TEXT,
-            bold: true,
-            size: FONTS.HOVER_SIZE,
-          },
-          borderWidth: 3,
-        });
-      } else if (parents.includes(relatedNodeId)) {
-        nodeUpdates.push({
-          id: relatedNodeId,
-          color: {
-            background: COLORS.HOVER_PARENT_BACKGROUND,
-            border: COLORS.HOVER_PARENT_BORDER,
-          },
-          font: {
-            color: COLORS.HOVER_PARENT_TEXT,
-            bold: true,
-          },
-          borderWidth: 3,
-        });
-      } else if (children.includes(relatedNodeId)) {
-        nodeUpdates.push({
-          id: relatedNodeId,
-          color: {
-            background: COLORS.HOVER_CHILD_BACKGROUND,
-            border: COLORS.HOVER_CHILD_BORDER,
-          },
-          font: {
-            color: COLORS.HOVER_CHILD_TEXT,
-            bold: true,
-          },
-          borderWidth: 3,
-        });
-      }
-    }
-
-    for (const edge of edges.get()) {
-      const fromIsRelated = allRelatedNodes.includes(edge.from);
-      const toIsRelated = allRelatedNodes.includes(edge.to);
-
-      if (fromIsRelated && toIsRelated) {
-        let edgeColor = COLORS.EDGE_HOVER;
-
-        // Arista padre directo → nodo actual: naranja (padre)
-        if (edge.to === nodeId && parents.includes(edge.from)) {
-          edgeColor = COLORS.EDGE_PARENT;
+      if (fromInRelated && toInRelated) {
+        let style = { ...EDGE_STYLE_HOVER };
+        if (edge.to === id && parents.has(edge.from)) {
+          style = { ...EDGE_STYLE_PARENT };
+        } else if (edge.from === id && children.has(edge.to)) {
+          style = { ...EDGE_STYLE_CHILD };
         }
-        // Arista nodo actual → hijo directo: verde (hijo)
-        else if (edge.from === nodeId && children.includes(edge.to)) {
-          edgeColor = COLORS.EDGE_CHILD;
-        }
-
-        edgeUpdates.push({
+        return {
           id: edge.id,
-          color: {
-            color: edgeColor,
-            opacity: 1.0,
-          },
-          width: 3,
-        });
+          color: { color: style.color, opacity: style.opacity },
+          width: style.width,
+          hidden: false,
+        };
+      } else {
+        return { id: edge.id, hidden: true };
       }
-    }
-
-    if (nodeUpdates.length) nodes.update(nodeUpdates);
-    if (edgeUpdates.length) edges.update(edgeUpdates);
-  });
-
-  network.on("blurNode", () => {
-    if (!currentHoverNode) return;
-
-    // Restaurar estilos originales
-    const resetNodes = highlightedNodes.map((nodeId) => {
-      const original = originalNodeStyles[nodeId] || {};
-      return {
-        id: nodeId,
-        color: original.color || null,
-        font: original.font || {
-          color: COLORS.NODE_TEXT,
-          bold: false,
-          size: FONTS.NODE_SIZE,
-        },
-        borderWidth: original.borderWidth || 2,
-      };
     });
 
-    const resetEdges = edges.get().map((edge) => {
-      const original = originalEdgeStyles[edge.id] || {};
-      return {
-        id: edge.id,
-        color: original.color || {
-          color: COLORS.EDGE_NORMAL,
-          opacity: COLORS.EDGE_OPACITY,
-        },
-        width: original.width || 2,
-      };
-    });
-
-    nodes.update(resetNodes);
-    edges.update(resetEdges);
-
-    currentHoverNode = null;
-    highlightedNodes = [];
+    // Aplicar batch updates (mejor performance)
+    nodesDs.update(nodeUpdates);
+    edgesDs.update(edgeUpdates);
   });
 
-  network.on("click", (params) => {
-    if (params.nodes.length === 1) {
-      const nodeId = params.nodes[0];
-      if (nodeId < 0) return;
+  net.on("blurNode", () => {
+    // Resetear todos los nodos a estilo por defecto
+    const allNodeUpdates = nodesDs.map((node) => ({
+      id: node.id,
+      ...NODE_STYLE_DEFAULT,
+    }));
 
-      const subject = allSubjects[nodeId];
-      if (subject) {
-        const message = `${subject.name} (${nodeId})\n\n${subject.desc}\n\nSemestre: ${subject.sem}`;
-        alert(message);
-      }
-    }
+    // Resetear todas las aristas a estilo por defecto
+    const allEdgeUpdates = edgesDs.map((edge) => ({
+      id: edge.id,
+      ...EDGE_STYLE_DEFAULT,
+    }));
+
+    nodesDs.update(allNodeUpdates);
+    edgesDs.update(allEdgeUpdates);
   });
 }
 
-// Ajustar vista inicial y comportamiento de doble click para zoom
-function setupInitialView(network, semestersCount) {
-  if (semestersCount > 5) {
-    const initialScale = Math.min(
-      1,
-      800 / (semestersCount * DIMENSIONS.SEMESTER_WIDTH),
-    );
-    network.moveTo({
-      position: {
-        x: ((semestersCount - 1) * DIMENSIONS.SEMESTER_WIDTH) / 2,
-        y: 0,
-      },
-      scale: initialScale * 0.8,
-    });
+// ================= FUNCIONES PARA NODOS RELACIONADOS =================
+
+// Búsqueda recursiva para obtener todos los pre-requisitos de un nodo. Utiliza "depth first
+// search" para buscar los ancestros del nodo seleccionado.
+function _getAllParents(id, allSubs, visited = new Set()) {
+  if (visited.has(id)) return new Set();
+  visited.add(id);
+
+  const parents = new Set();
+
+  const subject = allSubs[id];
+  if (!subject || !subject.pre) return parents;
+
+  for (const preId of subject.pre) {
+    parents.add(preId);
+    const grandParents = _getAllParents(preId, allSubs, visited);
+    for (const gp of grandParents) parents.add(gp);
   }
 
-  network.on("doubleClick", () => {
-    network.fit({
-      animation: {
-        duration: ANIMATION.FIT_DURATION,
-        easingFunction: "easeInOutQuad",
-      },
-    });
-  });
+  return parents;
+}
+
+// Obtiene todos los nodos que tengan como pre-requisito al nodo seleccionado
+function _getDirectChildren(id, allSubs) {
+  const children = new Set();
+
+  for (const [sid, subj] of Object.entries(allSubs)) {
+    if (subj.pre.includes(id)) children.add(sid);
+  }
+
+  return children;
+}
+
+// Agrupa las materias por semestre
+function _groupSubjectsBySemester(subjects, count) {
+  const grouped = {};
+  for (let i = 1; i <= count; i++) grouped[i] = {};
+
+  for (const [id, subject] of Object.entries(subjects)) {
+    if (grouped[subject.semester]) {
+      grouped[subject.semester][id] = subject;
+    }
+  }
+
+  return grouped;
 }

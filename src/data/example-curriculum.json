@@ -1,176 +1,81 @@
 {
-    "career": "Ingeniería Informática",
-    "semesters": {
-        "1": {
-            "MAT1": {
-                "name": "Matemática I",
-                "desc": "Álgebra lineal básica, matrices, determinantes y sistemas de ecuaciones.",
-                "pre": []
-            },
-            "FIS1": {
-                "name": "Física I",
-                "desc": "Mecánica newtoniana, cinemática, dinámica y trabajo-energía.",
-                "pre": []
-            },
-            "PROG1": {
-                "name": "Programación I",
-                "desc": "Introducción a la programación estructurada en C o Python.",
-                "pre": []
-            },
-            "INTRO": {
-                "name": "Introducción a la Informática",
-                "desc": "Historia, hardware, software básico y conceptos fundamentales.",
-                "pre": []
-            }
-        },
-        "2": {
-            "MAT2": {
-                "name": "Matemática II",
-                "desc": "Cálculo diferencial e integral de una variable.",
-                "pre": ["MAT1"]
-            },
-            "FIS2": {
-                "name": "Física II",
-                "desc": "Electricidad, magnetismo y ondas.",
-                "pre": ["FIS1", "MAT1"]
-            },
-            "PROG2": {
-                "name": "Programación II",
-                "desc": "Programación orientada a objetos, estructuras de datos básicas.",
-                "pre": ["PROG1"]
-            },
-            "LOGI": {
-                "name": "Lógica Simbólica",
-                "desc": "Proposicional, predicados, demostraciones y tablas de verdad.",
-                "pre": []
-            }
-        },
-        "3": {
-            "MAT3": {
-                "name": "Matemática III",
-                "desc": "Cálculo multivariable y ecuaciones diferenciales ordinarias.",
-                "pre": ["MAT2"]
-            },
-            "ED1": {
-                "name": "Estructuras de Datos I",
-                "desc": "Listas, pilas, colas, árboles binarios y recursión.",
-                "pre": ["PROG2"]
-            },
-            "ARQ": {
-                "name": "Arquitectura de Computadoras",
-                "desc": "Organización básica, ensamblador, memoria y CPU.",
-                "pre": []
-            }
-        },
-        "4": {
-            "SO1": {
-                "name": "Sistemas Operativos I",
-                "desc": "Procesos, hilos, planificación, memoria virtual.",
-                "pre": ["ARQ", "PROG2"]
-            },
-            "ED2": {
-                "name": "Estructuras de Datos II",
-                "desc": "Árboles balanceados, grafos, hashing.",
-                "pre": ["ED1"]
-            },
-            "BD1": {
-                "name": "Bases de Datos I",
-                "desc": "Modelo relacional, SQL, normalización.",
-                "pre": ["PROG2"]
-            }
-        },
-        "5": {
-            "ALGO": {
-                "name": "Algoritmos y Complejidad",
-                "desc": "Análisis de algoritmos, recursión, divide y conquista, greedy.",
-                "pre": ["ED2", "MAT3"]
-            },
-            "RED1": {
-                "name": "Redes de Computadoras I",
-                "desc": "Modelos OSI/TCP-IP, enlace, capa de red.",
-                "pre": []
-            },
-            "INGSOF": {
-                "name": "Ingeniería de Software",
-                "desc": "Ciclo de vida, requisitos, UML, metodologías ágiles.",
-                "pre": []
-            }
-        },
-        "6": {
-            "BD2": {
-                "name": "Bases de Datos II",
-                "desc": "Transacciones, concurrencia, optimización, NoSQL.",
-                "pre": ["BD1"]
-            },
-            "SO2": {
-                "name": "Sistemas Operativos II",
-                "desc": "Sistemas distribuidos, seguridad, sistemas de archivos avanzados.",
-                "pre": ["SO1"]
-            },
-            "WEB1": {
-                "name": "Desarrollo Web I",
-                "desc": "HTML, CSS, JavaScript, frontend moderno.",
-                "pre": []
-            }
-        },
-        "7": {
-            "IA1": {
-                "name": "Inteligencia Artificial I",
-                "desc": "Búsqueda, lógica, aprendizaje automático básico.",
-                "pre": ["ALGO", "PROG2"]
-            },
-            "SEG": {
-                "name": "Seguridad Informática",
-                "desc": "Criptografía, ataques, firewalls, ética hacker.",
-                "pre": []
-            },
-            "WEB2": {
-                "name": "Desarrollo Web II",
-                "desc": "Backend, APIs REST, bases de datos en web.",
-                "pre": ["WEB1", "BD1"]
-            }
-        },
-        "8": {
-            "PROY1": {
-                "name": "Proyecto de Software I",
-                "desc": "Desarrollo de proyecto en equipo (primera parte).",
-                "pre": []
-            },
-            "CLOUD": {
-                "name": "Computación en la Nube",
-                "desc": "AWS/Azure/GCP, contenedores, serverless.",
-                "pre": []
-            },
-            "TICS": {
-                "name": "Tópicos en Tecnologías de la Información",
-                "desc": "Tendencias actuales (IA generativa, blockchain, etc.).",
-                "pre": []
-            }
-        },
-        "9": {
-            "PROY2": {
-                "name": "Proyecto de Software II",
-                "desc": "Continuación y entrega del proyecto final.",
-                "pre": ["PROY1"]
-            },
-            "ETICA": {
-                "name": "Ética y Legislación en Informática",
-                "desc": "Propiedad intelectual, privacidad, regulaciones.",
-                "pre": []
-            }
-        },
-        "10": {
-            "EMPRE": {
-                "name": "Emprendimiento Tecnológico",
-                "desc": "Modelos de negocio, startups, pitch.",
-                "pre": []
-            },
-            "TESIS": {
-                "name": "Trabajo Final de Grado",
-                "desc": "Investigación o desarrollo aplicado.",
-                "pre": []
-            }
-        }
-    }
-}
+  "career": {
+    "id": "ingenieria-informatica",
+    "name": "Ingeniería Informática",
+    "totalSemestres": 3
+  },
 
+  "subjects": {
+    "matematica I": {
+      "name": "Matemática I",
+      "semester": 1,
+      "credits": 5,
+      "desc": "Álgebra básica, conjuntos, funciones y sistemas de ecuaciones.",
+      "prerequisites": []
+    },
+
+    "programacion I": {
+      "name": "Programación I",
+      "semester": 1,
+      "credits": 4,
+      "desc": "Algoritmos básicos, estructuras de control y tipos de datos.",
+      "prerequisites": []
+    },
+
+    "logica computacional": {
+      "name": "Lógica Computacional",
+      "semester": 1,
+      "credits": 3,
+      "desc": "Lógica proposicional, predicados y razonamiento formal.",
+      "prerequisites": []
+    },
+
+    "matematica II": {
+      "name": "Matemática II",
+      "semester": 2,
+      "credits": 5,
+      "desc": "Cálculo diferencial e integral en una variable.",
+      "prerequisites": ["matematica I"]
+    },
+
+    "programacion II": {
+      "name": "Programación II",
+      "semester": 2,
+      "credits": 4,
+      "desc": "Estructuras de datos, recursividad y modularización.",
+      "prerequisites": ["programacion I"]
+    },
+
+    "fisica I": {
+      "name": "Física I",
+      "semester": 2,
+      "credits": 3,
+      "desc": "Cinemática y dinámica clásica.",
+      "prerequisites": ["matematica I"]
+    },
+
+    "estructuras de datos": {
+      "name": "Estructuras de Datos",
+      "semester": 3,
+      "credits": 4,
+      "desc": "Listas, pilas, colas, árboles y grafos.",
+      "prerequisites": ["programacion II", "logica computacional"]
+    },
+
+    "fisica II": {
+      "name": "Física II",
+      "semester": 3,
+      "credits": 3,
+      "desc": "Electricidad, magnetismo y ondas.",
+      "prerequisites": ["fisica I", "matematica II"]
+    },
+
+    "analisis de algoritmos": {
+      "name": "Análisis de Algoritmos",
+      "semester": 3,
+      "credits": 4,
+      "desc": "Complejidad temporal y espacial, notación O grande.",
+      "prerequisites": ["estructuras de datos", "matematica II"]
+    }
+  }
+}

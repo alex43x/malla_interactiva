@@ -23,8 +23,11 @@
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
         // Este es el JSON que normalmente viene de la API del backend
-        const planData = await fetch('/src/data/example-curriculum.json').then(r => r.json())
-        renderGraph(planData, "graph-container");
+        const data = await fetch('/src/data/example-curriculum.json').then(r => r.json())
+
+        // Renderizar el grafo en el contenedor con id "graph"
+        prepareGraphData(data);
+        renderGraph("graph-container");
     })
   </script>
 
