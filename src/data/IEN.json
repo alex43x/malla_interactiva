@@ -10,7 +10,53 @@
         "name":"Cálculo I",
         "semester":1,
         "credits":6,
+        "required_credits": 0,
         "weekly_hours":6,
+        "desc":"Inecuaciones, Límites, Cálculo diferencial",
+        "prerequisites":[]
+    },
+    "algebra lineal":{
+        "name":"Álgebra Lineal",
+        "semester":1,
+        "credits":6,
+        "required_credits": 0,
+        "weekly_hours":6,
+        "desc":"Matrices, espacios vectoriales, transformaciones lineales",
+        "prerequisites":[]
+    },
+    "geometría analitica y vectores":{
+        "name":"Geometría Analítica y Vectores",
+        "semester":1,
+        "credits":5,
+        "required_credits": 0,
+        "weekly_hours":5,
+        "desc":"Circunferencias, cónicas, superficies",
+        "prerequisites":[]
+    },
+    "quimica":{
+        "name":"Química",
+        "semester":1,
+        "credits":5,
+        "required_credits": 0,
+        "weekly_hours":5,
+        "desc":"Conceptos elementales de química",
+        "prerequisites":[]
+    },
+    "dibujo tecnico":{
+        "name":"Dibujo Técnico",
+        "semester":1,
+        "credits":6,
+        "required_credits": 0,
+        "weekly_hours":6,
+        "desc":"Estudio del dibujo como medio de expresión",
+        "prerequisites":[]
+    },
+    "prevision y seguridad en el trabajo":{
+        "name":"Previsión y Seguridad en el Trabajo",
+        "semester":1,
+        "credits":3,
+        "required_credits": 0,
+        "weekly_hours":3,
         "desc":"Inecuaciones, Límites, Cálculo diferencial",
         "prerequisites":[]
     }
