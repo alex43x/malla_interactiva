@@ -3,7 +3,7 @@
     "id": "IEN",
     "name": "Ingeniería en Energía",
     "totalSemesters": 10,
-    "totalCredits": 300
+    "totalCredits": 315
   },
   "subjects": {
     "calculo I": {
@@ -537,6 +537,57 @@
       "weekly_hours": 3,
       "desc": "Comportamiento organizacional, administración de recursos humanos",
       "prerequisites": []
+    },
+    "planificacion energetica": {
+      "name": "Planificación Energética",
+      "semester": 10,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "El proceso de planificación, gestión de la información",
+      "prerequisites": [
+        "politica energetica",
+        "sustentabilidad mundial y regional"
+      ]
+    },
+    "integracion de sistemas": {
+      "name": "Integración de Sistemas",
+      "semester": 10,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Integración de energías renovables en el sistema energético actual",
+      "prerequisites": [
+        "politica energetica",
+        "sustentabilidad mundial y regional"
+      ]
+    },
+    "aspectos juridicos de la energia": {
+      "name": "Aspectos Jurídicos de la Energía",
+      "semester": 10,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Marco normativo jurídico",
+      "prerequisites": ["administracion y recursos humanos"]
+    },
+    "emprendedorismo": {
+      "name": "Emprendedorismo",
+      "semester": 10,
+      "credits": 2,
+      "required_credits": 0,
+      "weekly_hours": 2,
+      "desc": "Creatividad e innovación, el emprendedor, plan de negocio",
+      "prerequisites": []
+    },
+    "trabajo final de grado": {
+      "name": "Trabajo Final de Grado",
+      "semester": 10,
+      "credits": 3,
+      "required_credits": 0,
+      "weekly_hours": 3,
+      "desc": "Fundamentos de la investigación y elección del tema, definición de problemas y alcance, revisión de la literatura",
+      "prerequisites": ["politica energetica"]
     }
   }
 }
