@@ -96,7 +96,7 @@
         "desc":"Electromagnetismo",
         "prerequisites":["calculo I"]
     },
-    "electrotecnica":{
+    "electrotecnia":{
         "name":"Electrotecnia",
         "semester":2,
         "credits":5,
@@ -113,6 +113,69 @@
         "weekly_hours":5,
         "desc":"Elaboración de dibujos técnicos con herramientas informáticas",
         "prerequisites":["dibujo tecnico"]
+    },
+    "calculo III":{
+        "name":"Cálculo III",
+        "semester":3,
+        "credits":6,
+        "required_credits": 0,
+        "weekly_hours":6,
+        "desc":"Ecuaciones Diferenciales",
+        "prerequisites":["calculo II"]
+    },
+    "calculo IV":{
+        "name":"Cálculo IV",
+        "semester":3,
+        "credits":6,
+        "required_credits": 0,
+        "weekly_hours":6,
+        "desc":"Cálculo Vectorial",
+        "prerequisites":["calculo II"]
+    },
+    "teoria de circuitos":{
+        "name":"Teoría de Circuitos",
+        "semester":3,
+        "credits":5,
+        "required_credits": 0,
+        "weekly_hours":5,
+        "desc":"Modelos y elementos circuitales eléctricos a través de sus realizaciones",
+        "prerequisites":["calculo II","fisica II","electrotecnia"]
+    },
+    "energia y medioambiente":{
+        "name":"Energía y Medioambiente",
+        "semester":3,
+        "credits":4,
+        "required_credits": 0,
+        "weekly_hours":4,
+        "desc":"Geopolítica de la hidroenergía, energía, generación convencional y no convecional de la energía, desarrollo sostenible",
+        "prerequisites":["quimica","fisica I","fisica II"]
+    },
+    "fisica III":{
+        "name":"Física III",
+        "semester":3,
+        "credits":5,
+        "required_credits": 0,
+        "weekly_hours":5,
+        "desc":"Oscilaciones y ondas",
+        "prerequisites":["calculo II","fisica II"]
+    },
+    "tecnologia de los materiales":{
+        "name":"Tecnología de los Materiales",
+        "semester":3,
+        "credits":6,
+        "required_credits": 0,
+        "weekly_hours":6,
+        "desc":"Estructura, propiedades y procesamiento de los materiales",
+        "prerequisites":["fisica I"]
+    },
+    "programacion":{
+        "name":"Programación",
+        "semester":3,
+        "credits":5,
+        "required_credits": 0,
+        "weekly_hours":5,
+        "desc":"Programacion en lenguaje C",
+        "prerequisites":["algoritmo"]
     }
 
   }
