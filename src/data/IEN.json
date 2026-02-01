@@ -1,0 +1,18 @@
+{
+  "career": {
+    "id": "IEN",
+    "name": "Ingeniería en Energía",
+    "totalSemesters": 10,
+    "totalCredits": 300
+  },
+  "subjects": {
+    "calculo I":{
+        "name":"Cálculo I",
+        "semester":1,
+        "credits":6,
+        "weekly_hours":6,
+        "desc":"Inecuaciones, Límites, Cálculo diferencial",
+        "prerequisites":[]
+    }
+  }
+}
