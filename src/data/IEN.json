@@ -6,177 +6,230 @@
     "totalCredits": 300
   },
   "subjects": {
-    "calculo I":{
-        "name":"Cálculo I",
-        "semester":1,
-        "credits":6,
-        "required_credits": 0,
-        "weekly_hours":6,
-        "desc":"Inecuaciones, Límites, Cálculo diferencial",
-        "prerequisites":[]
+    "calculo I": {
+      "name": "Cálculo I",
+      "semester": 1,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Inecuaciones, Límites, Cálculo diferencial",
+      "prerequisites": []
     },
-    "algebra lineal":{
-        "name":"Álgebra Lineal",
-        "semester":1,
-        "credits":6,
-        "required_credits": 0,
-        "weekly_hours":6,
-        "desc":"Matrices, espacios vectoriales, transformaciones lineales",
-        "prerequisites":[]
+    "algebra lineal": {
+      "name": "Álgebra Lineal",
+      "semester": 1,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Matrices, espacios vectoriales, transformaciones lineales",
+      "prerequisites": []
     },
-    "geometria analitica y vectores":{
-        "name":"Geometría Analítica y Vectores",
-        "semester":1,
-        "credits":5,
-        "required_credits": 0,
-        "weekly_hours":5,
-        "desc":"Circunferencias, cónicas, superficies",
-        "prerequisites":[]
+    "geometria analitica y vectores": {
+      "name": "Geometría Analítica y Vectores",
+      "semester": 1,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Circunferencias, cónicas, superficies",
+      "prerequisites": []
     },
-    "quimica":{
-        "name":"Química",
-        "semester":1,
-        "credits":5,
-        "required_credits": 0,
-        "weekly_hours":5,
-        "desc":"Conceptos elementales de química",
-        "prerequisites":[]
+    "quimica": {
+      "name": "Química",
+      "semester": 1,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Conceptos elementales de química",
+      "prerequisites": []
     },
-    "dibujo tecnico":{
-        "name":"Dibujo Técnico",
-        "semester":1,
-        "credits":6,
-        "required_credits": 0,
-        "weekly_hours":6,
-        "desc":"Estudio del dibujo como medio de expresión",
-        "prerequisites":[]
+    "dibujo tecnico": {
+      "name": "Dibujo Técnico",
+      "semester": 1,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Estudio del dibujo como medio de expresión",
+      "prerequisites": []
     },
-    "prevision y seguridad en el trabajo":{
-        "name":"Previsión y Seguridad en el Trabajo",
-        "semester":1,
-        "credits":3,
-        "required_credits": 0,
-        "weekly_hours":3,
-        "desc":"Seguridad en el trabajo, técnicas de previsión, accidentes, equipos de prevención",
-        "prerequisites":[]
+    "prevision y seguridad en el trabajo": {
+      "name": "Previsión y Seguridad en el Trabajo",
+      "semester": 1,
+      "credits": 3,
+      "required_credits": 0,
+      "weekly_hours": 3,
+      "desc": "Seguridad en el trabajo, técnicas de previsión, accidentes, equipos de prevención",
+      "prerequisites": []
     },
-    "algoritmo":{
-        "name":"Algoritmo",
-        "semester":2,
-        "credits":5,
-        "required_credits": 0,
-        "weekly_hours":5,
-        "desc":"Resolución de problemas con algoritmos de computadora",
-        "prerequisites":["algebra lineal"]
+    "algoritmo": {
+      "name": "Algoritmo",
+      "semester": 2,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Resolución de problemas con algoritmos de computadora",
+      "prerequisites": ["algebra lineal"]
     },
-    "calculo II":{
-        "name":"Cálculo II",
-        "semester":2,
-        "credits":6,
-        "required_credits": 0,
-        "weekly_hours":6,
-        "desc":"Cálculo Integral, Series y Cálculo Multivariable",
-        "prerequisites":["calculo I","geometria analitica y vectores"]
+    "calculo II": {
+      "name": "Cálculo II",
+      "semester": 2,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Cálculo Integral, Series y Cálculo Multivariable",
+      "prerequisites": ["calculo I", "geometria analitica y vectores"]
     },
-    "fisica I":{
-        "name":"Física I",
-        "semester":2,
-        "credits":8,
-        "required_credits": 0,
-        "weekly_hours":8,
-        "desc":"Mecánica: Cinemática, Dinámica, Trabajo, Energía y Potencia",
-        "prerequisites":["calculo I"]
+    "fisica I": {
+      "name": "Física I",
+      "semester": 2,
+      "credits": 8,
+      "required_credits": 0,
+      "weekly_hours": 8,
+      "desc": "Mecánica: Cinemática, Dinámica, Trabajo, Energía y Potencia",
+      "prerequisites": ["calculo I"]
     },
-    "fisica II":{
-        "name":"Física II",
-        "semester":2,
-        "credits":8,
-        "required_credits": 0,
-        "weekly_hours":8,
-        "desc":"Electromagnetismo",
-        "prerequisites":["calculo I"]
+    "fisica II": {
+      "name": "Física II",
+      "semester": 2,
+      "credits": 8,
+      "required_credits": 0,
+      "weekly_hours": 8,
+      "desc": "Electromagnetismo",
+      "prerequisites": ["calculo I"]
     },
-    "electrotecnia":{
-        "name":"Electrotecnia",
-        "semester":2,
-        "credits":5,
-        "required_credits": 0,
-        "weekly_hours":5,
-        "desc":"Conceptos básicos de la Electricidad",
-        "prerequisites":["algebra lineal"]
+    "electrotecnia": {
+      "name": "Electrotecnia",
+      "semester": 2,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Conceptos básicos de la Electricidad",
+      "prerequisites": ["algebra lineal"]
     },
-    "diseño asistido por computadoras":{
-        "name":"Diseño Asistido por Computadoras",
-        "semester":2,
-        "credits":5,
-        "required_credits": 0,
-        "weekly_hours":5,
-        "desc":"Elaboración de dibujos técnicos con herramientas informáticas",
-        "prerequisites":["dibujo tecnico"]
+    "diseño asistido por computadoras": {
+      "name": "Diseño Asistido por Computadoras",
+      "semester": 2,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Elaboración de dibujos técnicos con herramientas informáticas",
+      "prerequisites": ["dibujo tecnico"]
     },
-    "calculo III":{
-        "name":"Cálculo III",
-        "semester":3,
-        "credits":6,
-        "required_credits": 0,
-        "weekly_hours":6,
-        "desc":"Ecuaciones Diferenciales",
-        "prerequisites":["calculo II"]
+    "calculo III": {
+      "name": "Cálculo III",
+      "semester": 3,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Ecuaciones Diferenciales",
+      "prerequisites": ["calculo II"]
     },
-    "calculo IV":{
-        "name":"Cálculo IV",
-        "semester":3,
-        "credits":6,
-        "required_credits": 0,
-        "weekly_hours":6,
-        "desc":"Cálculo Vectorial",
-        "prerequisites":["calculo II"]
+    "calculo IV": {
+      "name": "Cálculo IV",
+      "semester": 3,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Cálculo Vectorial",
+      "prerequisites": ["calculo II"]
     },
-    "teoria de circuitos":{
-        "name":"Teoría de Circuitos",
-        "semester":3,
-        "credits":5,
-        "required_credits": 0,
-        "weekly_hours":5,
-        "desc":"Modelos y elementos circuitales eléctricos a través de sus realizaciones",
-        "prerequisites":["calculo II","fisica II","electrotecnia"]
+    "teoria de circuitos": {
+      "name": "Teoría de Circuitos",
+      "semester": 3,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Modelos y elementos circuitales eléctricos a través de sus realizaciones",
+      "prerequisites": ["calculo II", "fisica II", "electrotecnia"]
     },
-    "energia y medioambiente":{
-        "name":"Energía y Medioambiente",
-        "semester":3,
-        "credits":4,
-        "required_credits": 0,
-        "weekly_hours":4,
-        "desc":"Geopolítica de la hidroenergía, energía, generación convencional y no convecional de la energía, desarrollo sostenible",
-        "prerequisites":["quimica","fisica I","fisica II"]
+    "energia y medioambiente": {
+      "name": "Energía y Medioambiente",
+      "semester": 3,
+      "credits": 4,
+      "required_credits": 0,
+      "weekly_hours": 4,
+      "desc": "Geopolítica de la hidroenergía, energía, generación convencional y no convecional de la energía, desarrollo sostenible",
+      "prerequisites": ["quimica", "fisica I", "fisica II"]
     },
-    "fisica III":{
-        "name":"Física III",
-        "semester":3,
-        "credits":5,
-        "required_credits": 0,
-        "weekly_hours":5,
-        "desc":"Oscilaciones y ondas",
-        "prerequisites":["calculo II","fisica II"]
+    "fisica III": {
+      "name": "Física III",
+      "semester": 3,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Oscilaciones y ondas",
+      "prerequisites": ["calculo II", "fisica II"]
     },
-    "tecnologia de los materiales":{
-        "name":"Tecnología de los Materiales",
-        "semester":3,
-        "credits":6,
-        "required_credits": 0,
-        "weekly_hours":6,
-        "desc":"Estructura, propiedades y procesamiento de los materiales",
-        "prerequisites":["fisica I"]
+    "tecnologia de los materiales": {
+      "name": "Tecnología de los Materiales",
+      "semester": 3,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Estructura, propiedades y procesamiento de los materiales",
+      "prerequisites": ["fisica I"]
     },
-    "programacion":{
-        "name":"Programación",
-        "semester":3,
-        "credits":5,
-        "required_credits": 0,
-        "weekly_hours":5,
-        "desc":"Programacion en lenguaje C",
-        "prerequisites":["algoritmo"]
+    "programacion": {
+      "name": "Programación",
+      "semester": 3,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Programacion en lenguaje C",
+      "prerequisites": ["algoritmo"]
+    },
+    "calculo V": {
+      "name": "Cálculo V",
+      "semester": 4,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Variable compleja",
+      "prerequisites": ["calculo IV"]
+    },
+    "probabilidad y estadistica": {
+      "name": "Probabilidad y Estadística",
+      "semester": 4,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Estadística descriptiva, probabilidad",
+      "prerequisites": ["calculo III"]
+    },
+    "fisica IV": {
+      "name": "Física IV",
+      "semester": 4,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Hidrostática, calorimetría",
+      "prerequisites": ["fisica III", "calculo IV"]
+    },
+    "fisica V": {
+      "name": "Física V",
+      "semester": 4,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Mecánica cuántica",
+      "prerequisites": ["fisica III"]
+    },
+    "electronica instrumentacion y control": {
+      "name": "Electrónica, Instrumentación y Control",
+      "semester": 4,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Fundamentos acerca de diversos tipos de sensores y del área de instrumentación",
+      "prerequisites": ["teoria de circuitos"]
+    },
+    "investigacion de operaciones": {
+      "name": "Investigación de Operaciones",
+      "semester": 4,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Optimización los distintos procesos de asignación de los recursos, buscando apoyar de forma eficiente la toma de decisiones.",
+      "prerequisites": ["calculo IV"]
     }
-
   }
 }
