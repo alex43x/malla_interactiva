@@ -287,6 +287,51 @@
       "weekly_hours": 5,
       "desc": "Introducción a la economía, oferta y demanda, producto y renta nacional",
       "prerequisites": ["energia y medioambiente"]
+    },
+    "sistemas de control I": {
+      "name": "Sistemas de Control I",
+      "semester": 6,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Introduccion al análisis de los sistemas de control",
+      "prerequisites": ["calculo VI"]
+    },
+    "fisica VII": {
+      "name": "Física VII",
+      "semester": 6,
+      "credits": 8,
+      "required_credits": 0,
+      "weekly_hours": 8,
+      "desc": "Campos eléctricos",
+      "prerequisites": ["fisica VI"]
+    },
+    "fisica VIII": {
+      "name": "Física VIII",
+      "semester": 6,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Hidrodinámica",
+      "prerequisites": ["fisica VI"]
+    },
+    "generacion de energia electrica": {
+      "name": "Generación de Energía Eléctrica",
+      "semester": 6,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Fuentes de energía, centrales de generación",
+      "prerequisites": ["fisica VI", "conversion de energia electrica I"]
+    },
+    "conversion de energia electrica II": {
+      "name": "Conversión de Energía Eléctrica II",
+      "semester": 6,
+      "credits": 7,
+      "required_credits": 0,
+      "weekly_hours": 7,
+      "desc": "Maquinas rotatorias, síncronas, asíncronas y a conmutador de corriente continua",
+      "prerequisites": ["conversion de energia electrica I"]
     }
   }
 }
