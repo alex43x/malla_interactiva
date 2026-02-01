@@ -230,6 +230,63 @@
       "weekly_hours": 6,
       "desc": "Optimización los distintos procesos de asignación de los recursos, buscando apoyar de forma eficiente la toma de decisiones.",
       "prerequisites": ["calculo IV"]
+    },
+    "calculo VI": {
+      "name": "Cálculo VI",
+      "semester": 5,
+      "credits": 6,
+      "required_credits": 0,
+      "weekly_hours": 6,
+      "desc": "Transformadas de Laplace y Series de Fourier",
+      "prerequisites": ["calculo V"]
+    },
+    "fisica VI": {
+      "name": "Física VI",
+      "semester": 5,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Mecánica de particulas",
+      "prerequisites": ["fisica IV"]
+    },
+    "modelizacion y analisis numerico": {
+      "name": "Modelización y Análisis Numérico",
+      "semester": 5,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Teoría de errores, regresión e interpolación numérica",
+      "prerequisites": ["programacion", "investigacion de operaciones"]
+    },
+    "transporte y distribucion de energia I": {
+      "name": "Transporte y Distribución de Energía I",
+      "semester": 5,
+      "credits": 4,
+      "required_credits": 0,
+      "weekly_hours": 4,
+      "desc": "Características de los sistemas de transporte y distribución de sistema eléctrico",
+      "prerequisites": [
+        "energia y medioambiente",
+        "electronica instrumentacion y control"
+      ]
+    },
+    "conversion de energia electrica I": {
+      "name": "Conversión de Energía Eléctrica I",
+      "semester": 5,
+      "credits": 7,
+      "required_credits": 0,
+      "weekly_hours": 7,
+      "desc": "Circuitos magnéticos, transformadores, principios de conversión de energía electromecánica",
+      "prerequisites": ["fisica II"]
+    },
+    "economia y finanzas": {
+      "name": "Economía y Finanzas",
+      "semester": 5,
+      "credits": 5,
+      "required_credits": 0,
+      "weekly_hours": 5,
+      "desc": "Introducción a la economía, oferta y demanda, producto y renta nacional",
+      "prerequisites": ["energia y medioambiente"]
     }
   }
 }
