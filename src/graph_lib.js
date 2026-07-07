@@ -1,39 +1,50 @@
 // ================= CONSTANTES DE DIMENSIONES =================
 
 const DIMENSIONS = {
-  SEMESTER_WIDTH: 300, // Ancho asignado por semestre
-  NODE_START_Y: 80, // Posición vertical inicial de los nodos
-  NODE_SPACING_Y: 90, // Separación vertical entre nodos
-  NODE_MARGIN: 10, // Margen interno de los nodos
-  NODE_MAX_WIDTH: 220, // ≈ 28–32 caracteres dependiendo de la fuente
+  SEMESTER_WIDTH: 360,   // Más espacio horizontal para que las uniones se desvíen antes de los nodos
+  NODE_START_Y: 80,      // Posición vertical inicial de los nodos
+  NODE_SPACING_Y: 122,   // Más separación vertical para mejorar la lectura
+  NODE_MARGIN: { top: 10, right: 16, bottom: 10, left: 16 },
+  NODE_MAX_WIDTH: 220,   // ≈ 28-32 caracteres dependiendo de la fuente
 };
 
 // ================= CONSTANTES DE COLORES =================
 
 const COLORS = {
-  NODE_TEXT: "#1f2937",
-  NODE_BG_ODD: "#f591b2", // semestres impares (1,3,5...)
-  NODE_BG_EVEN: "#9dc6ac", // semestres pares   (2,4,6...)
-  NODE_BORDER: "#6b7280",
+  NODE_TEXT: "#f8fafc", // slate-50 para máximo contraste sobre fondo oscuro
 
-  NODE_HIGHLIGHT_BG: "#b9aeda",
-  NODE_HIGHLIGHT_BORDER: "#6b7280",
+  // Colores de semestres — azules vibrantes y modernos
+  NODE_BG_ODD:     "#2563eb",   // blue-600
+  NODE_BG_EVEN:    "#0ea5e9",   // sky-500
+  NODE_BORDER_ODD:  "#60a5fa",  // blue-400
+  NODE_BORDER_EVEN: "#7dd3fc",  // sky-300
 
-  NODE_CHILD_BG: "#60a5fa",
-  NODE_CHILD_BORDER: "#6b7280",
+  // Estado: seleccionado (hover)
+  NODE_HIGHLIGHT_BG:     "#020617",  // slate-950
+  NODE_HIGHLIGHT_BORDER: "#38bdf8",  // sky-400 brillante
 
-  NODE_PARENT_BG: "#fbbf24",
-  NODE_PARENT_BORDER: "#6b7280",
+  // Estado: pre-requisito (padre) - borde verde brillante
+  NODE_PARENT_BG:     "#064e3b",  // emerald-900 oscuro
+  NODE_PARENT_BORDER: "#22c55e",  // green-500
 
-  EDGE_NORMAL: "#232323",
-  EDGE_OPACITY: 0.8,
+  // Estado: lo que desbloquea (hijo) - borde azul brillante
+  NODE_CHILD_BG:     "#1e3a8a",   // blue-900 oscuro
+  NODE_CHILD_BORDER: "#3b82f6",  // blue-500
+
+  // Aristas
+  EDGE_NORMAL:       "#94a3b8",  // slate-400 (más visible que el slate-300 de antes)
+  EDGE_OPACITY:      0.85,
+  EDGE_PARENT_COLOR: "#22c55e",  // green-500
+  EDGE_CHILD_COLOR:  "#3b82f6",  // blue-500
 };
 
 // ================= CONSTANTES DE FUENTES =================
 
 const FONTS = {
-  NODE_SIZE: 14,
-  NODE_FACE: "Inter, Arial, sans-serif",
+  NODE_SIZE:    13,
+  NODE_FACE:    "Inter, -apple-system, Arial, sans-serif",
+  BADGE_SIZE:   9,
+  BADGE_COLOR:  "rgba(255,255,255,0.7)", // texto claro semitransparente para badges
 };
 
 // ============== CONFIGURACIÓN BASE PARA NODOS Y ARISTAS ==============
@@ -47,11 +58,26 @@ const NODE_COMMON_CONFIG = {
     size: FONTS.NODE_SIZE,
     face: FONTS.NODE_FACE,
     color: COLORS.NODE_TEXT,
-    multi: true, // permite multilínea
+    multi: true,        // habilita etiquetas HTML (<b>, <i>)
+    bold: {             // estilo de los fragmentos <b>...</b>
+      size: FONTS.BADGE_SIZE,
+      color: FONTS.BADGE_COLOR,
+      mod: "bold",
+    },
   },
-  borderWidth: 1,
+  borderWidth: 1.5,
+  shadow: {
+    enabled: true,
+    color: "rgba(0,0,0,0.12)", // Sombra más profunda para mayor relieve
+    size: 14,
+    x: 0,
+    y: 6,
+  },
+  shapeProperties: {
+    borderRadius: 8, // Da un aspecto moderno redondeado como la imagen
+  },
   widthConstraint: {
-    maximum: DIMENSIONS.NODE_MAX_WIDTH, // fuerza wrap
+    maximum: DIMENSIONS.NODE_MAX_WIDTH,
   },
 };
 
@@ -59,72 +85,103 @@ const EDGES_COMMON_CONFIG = {
   arrows: {
     to: {
       enabled: true,
-      scaleFactor: 0.8,
+      scaleFactor: 0.75,
       type: "arrow",
     },
   },
-  color: {
-    color: COLORS.EDGE_NORMAL,
-    opacity: COLORS.EDGE_OPACITY,
-    highlight: COLORS.EDGE_NORMAL,
-    hover: COLORS.EDGE_NORMAL, // Añadir estado hover explícito
-    inherit: false, // Importante: evitar herencia de colores
+  smooth: {
+    type: "cubicBezier",
+    forceDirection: "horizontal",
+    roundness: 0.18,
   },
-  width: 1,
-  hoverWidth: 1,
-  selectionWidth: 0, // Evitar cambio de ancho al seleccionar
+  color: {
+    color:     COLORS.EDGE_NORMAL,
+    opacity:   COLORS.EDGE_OPACITY,
+    highlight: COLORS.EDGE_NORMAL,
+    hover:     COLORS.EDGE_NORMAL,
+    inherit:   false,
+  },
+  width: 2.3,
+  hoverWidth: 0,
+  selectionWidth: 0,
+  dashes: false,
+  shadow: {
+    enabled: false,
+  },
 };
 
 const SEMESTERS_TITLE_STYLE = {
-  y: 10,
+  y: 22,
   fixed: true,
   physics: false,
   font: {
-    size: 28,
+    size: 18,
     bold: true,
-    color: "#374151",
+    color: "#94a3b8",   // slate-400
+    face: "Inter, Arial, sans-serif",
   },
   shape: "text",
 };
 
-// ================= ESTILOS DE NODOS (para hover / parent / child) =================
+// ================= ESTILOS DE NODOS (hover / parent / child / reset) =================
 
 const NODE_STYLE_BASE = {
   font: {
     color: COLORS.NODE_TEXT,
-    bold: false,
     size: FONTS.NODE_SIZE,
+    bold: { size: FONTS.BADGE_SIZE, color: FONTS.BADGE_COLOR },
   },
-  borderWidth: 1, // valor fijo para todos los estados
+  borderWidth: 1.5,
+  shadow: {
+    enabled: true,
+    color: "rgba(0,0,0,0.12)",
+    size: 14,
+    x: 0,
+    y: 6,
+  },
   opacity: 1,
 };
 
-const NODE_STYLE_DEFAULT_FADED = {
-  opacity: 0.12,
-};
+const NODE_STYLE_DEFAULT_FADED = { opacity: 0.12 };
 
 const NODE_STYLE_HOVER = {
   color: {
     background: COLORS.NODE_HIGHLIGHT_BG,
-    border: COLORS.NODE_HIGHLIGHT_BORDER,
+    border:     COLORS.NODE_HIGHLIGHT_BORDER,
   },
   font: {
-    ...NODE_STYLE_BASE.font,
-    bold: true,
-    size: FONTS.NODE_SIZE + 2,
+    color: "#f8fafc", // texto claro
+    size: FONTS.NODE_SIZE,
+    bold: { size: FONTS.BADGE_SIZE, color: "rgba(248,250,252,0.7)" },
   },
-  // borderWidth ya viene de NODE_STYLE_BASE → no se sobreescribe
+  borderWidth: 2.5,
+  shadow: {
+    enabled: true,
+    color: "rgba(56,189,248,0.6)", // brillo celeste más intenso
+    size: 24,
+    x: 0,
+    y: 0,
+  },
   opacity: 1,
 };
 
 const NODE_STYLE_PARENT = {
   color: {
     background: COLORS.NODE_PARENT_BG,
-    border: COLORS.NODE_PARENT_BORDER,
+    border:     COLORS.NODE_PARENT_BORDER,
   },
   font: {
-    ...NODE_STYLE_BASE.font,
-    bold: true,
+    color: "#f8fafc", // texto claro
+    size: FONTS.NODE_SIZE,
+    bold: { size: FONTS.BADGE_SIZE, color: "rgba(248,250,252,0.7)" },
+  },
+  borderWidth: 2.5,
+  shadow: {
+    enabled: true,
+    color: "rgba(34,197,94,0.5)", // brillo verde más intenso
+    size: 24,
+    x: 0,
+    y: 0,
   },
   opacity: 1,
 };
@@ -132,13 +189,21 @@ const NODE_STYLE_PARENT = {
 const NODE_STYLE_CHILD = {
   color: {
     background: COLORS.NODE_CHILD_BG,
-    border: COLORS.NODE_CHILD_BORDER,
+    border:     COLORS.NODE_CHILD_BORDER,
   },
   font: {
-    ...NODE_STYLE_BASE.font,
-    bold: true,
+    color: "#f8fafc", // texto claro
+    size: FONTS.NODE_SIZE,
+    bold: { size: FONTS.BADGE_SIZE, color: "rgba(248,250,252,0.7)" },
   },
-  // borderWidth ya viene de NODE_STYLE_BASE
+  borderWidth: 2.5,
+  shadow: {
+    enabled: true,
+    color: "rgba(59,130,246,0.5)", // brillo azul más intenso
+    size: 24,
+    x: 0,
+    y: 0,
+  },
   opacity: 1,
 };
 
@@ -149,21 +214,18 @@ let nodes;
 let edges;
 let network;
 let semestersCount = 0;
+let _showRelationsRef = null;   // Referencia pública a showRelations (para chips del modal)
 
 // ===================== PUBLIC API =====================
 
 function prepareGraphData(data) {
   semestersCount = data.career.totalSemesters;
 
-  const subjectsBySemester = _groupSubjectsBySemester(
-    data.subjects,
-    semestersCount,
-  );
+  const subjectsBySemester = _groupSubjectsBySemester(data.subjects, semestersCount);
   const semesterTitles = _createSemesterTitles();
-
   const created = _createSubjectNodes(subjectsBySemester);
-  allSubjects = created.allSubjects;
 
+  allSubjects = created.allSubjects;
   nodes = new vis.DataSet([...semesterTitles, ...created.nodesArray]);
   edges = new vis.DataSet(_createEdges(allSubjects));
 }
@@ -172,11 +234,34 @@ function renderGraph(elementId) {
   const element = document.getElementById(elementId);
   if (!element) return;
 
-  const options = _createVisOptions();
+  // Destruir red anterior para evitar memory leaks al cambiar de carrera
+  if (network) {
+    network.destroy();
+    network = null;
+    _showRelationsRef = null;
+  }
 
+  const options = _createVisOptions();
   network = new vis.Network(element, { nodes, edges }, options);
   _setupNetworkEvents(network, allSubjects, nodes, edges);
   network.fit();
+}
+
+/**
+ * Permite resaltar un nodo desde fuera de graph_lib.js
+ * (usado por los chips de pre-requisitos del modal).
+ */
+function highlightNode(id) {
+  if (_showRelationsRef) _showRelationsRef(id);
+}
+
+// ================= TIPO DE MATERIA =================
+
+function _getSubjectType(id) {
+  const lower = String(id).toLowerCase();
+  if (lower.includes("electiva")) return "ELE";
+  if (lower.includes("optativa")) return "OPT";
+  return "OBL";
 }
 
 // ================= FUNCIONES AUXILIARES =================
@@ -188,27 +273,43 @@ function _createSubjectNodes(semesters) {
   for (let sem = 1; sem <= semestersCount; sem++) {
     const subjects = semesters[sem];
     const ids = Object.keys(subjects).sort((a, b) =>
-      subjects[a].name.localeCompare(subjects[b].name),
+      subjects[a].name.localeCompare(subjects[b].name)
     );
 
-    const xBase = (sem - 1) * DIMENSIONS.SEMESTER_WIDTH;
+    const xBase    = (sem - 1) * DIMENSIONS.SEMESTER_WIDTH;
+    const isEven   = sem % 2 === 0;
+    const bgColor  = isEven ? COLORS.NODE_BG_EVEN    : COLORS.NODE_BG_ODD;
+    const brColor  = isEven ? COLORS.NODE_BORDER_EVEN : COLORS.NODE_BORDER_ODD;
 
     ids.forEach((id, i) => {
       const subject = subjects[id];
+      const badge   = _getSubjectType(id);
 
       allSubjectsLocal[id] = {
         ...subject,
         sem,
         pre: subject.prerequisites || [],
+        badge,
       };
 
       nodesArray.push({
         id,
-        label: subject.name,
-        group: `sem${sem}`,
+        label: `${subject.name}\n<b>${badge}</b>`,  // 2ª línea: badge pequeño
         x: xBase,
         y: DIMENSIONS.NODE_START_Y + i * DIMENSIONS.NODE_SPACING_Y,
         ...NODE_COMMON_CONFIG,
+        color: {
+          background: bgColor,
+          border:     brColor,
+          highlight: {
+            background: COLORS.NODE_HIGHLIGHT_BG,
+            border:     COLORS.NODE_HIGHLIGHT_BORDER,
+          },
+          hover: {
+            background: COLORS.NODE_HIGHLIGHT_BG,
+            border:     COLORS.NODE_HIGHLIGHT_BORDER,
+          },
+        },
       });
     });
   }
@@ -222,8 +323,9 @@ function _createEdges(allSubjectsLocal) {
   for (const [id, subject] of Object.entries(allSubjectsLocal)) {
     for (const pre of subject.pre) {
       edgesArray.push({
+        id: `${pre}-${id}`,
         from: pre,
-        to: id,
+        to:   id,
         ...EDGES_COMMON_CONFIG,
       });
     }
@@ -237,9 +339,9 @@ function _createSemesterTitles() {
 
   for (let i = 1; i <= semestersCount; i++) {
     titles.push({
-      id: `title-sem-${i}`,
-      label: `Semestre ${i}`,
-      x: (i - 1) * DIMENSIONS.SEMESTER_WIDTH,
+      id:    `title-sem-${i}`,
+      label: `Sem. ${i}`,
+      x:     (i - 1) * DIMENSIONS.SEMESTER_WIDTH,
       ...SEMESTERS_TITLE_STYLE,
     });
   }
@@ -248,49 +350,15 @@ function _createSemesterTitles() {
 }
 
 function _createVisOptions() {
-  const groups = {};
-
-  for (let i = 1; i <= semestersCount; i++) {
-    const isEven = i % 2 === 0;
-    groups[`sem${i}`] = {
-      color: {
-        background: isEven ? COLORS.NODE_BG_EVEN : COLORS.NODE_BG_ODD,
-        border: COLORS.NODE_BORDER,
-        highlight: {
-          background: COLORS.NODE_HIGHLIGHT_BG,
-          border: COLORS.NODE_HIGHLIGHT_BORDER,
-        },
-        hover: {
-          background: COLORS.NODE_HIGHLIGHT_BG,
-          border: COLORS.NODE_HIGHLIGHT_BORDER,
-        },
-      },
-      font: { color: COLORS.NODE_TEXT },
-    };
-  }
-
   return {
     interaction: {
-      hover: true,
-      dragView: true,
-      zoomView: true,
+      hover:     true,
+      dragView:  true,
+      zoomView:  true,
+      tooltipDelay: 9999999,  // desactiva el tooltip nativo de vis-network
     },
     physics: false,
     layout: { hierarchical: false },
-    groups,
-    edges: {
-      arrows: {
-        to: {
-          enabled: true,
-        },
-      },
-      color: {
-        color: COLORS.EDGE_NORMAL,
-        highlight: COLORS.EDGE_NORMAL,
-        hover: COLORS.EDGE_NORMAL,
-        inherit: false, // Doble seguridad: no heredar colores
-      },
-    },
   };
 }
 
@@ -298,51 +366,174 @@ function _createVisOptions() {
 
 function _setupNetworkEvents(net, allSubs, nodesDs, edgesDs) {
   const isSemesterTitle = (nodeId) => String(nodeId).startsWith("title-sem-");
-
   const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const tooltip = document.getElementById("node-tooltip");
 
+  // ── Calcular color base de un nodo según su semestre ──
+  function _originalColor(id) {
+    const sub = allSubs[id];
+    if (!sub) return null;
+    const even = sub.sem % 2 === 0;
+    return {
+      background: even ? COLORS.NODE_BG_EVEN    : COLORS.NODE_BG_ODD,
+      border:     even ? COLORS.NODE_BORDER_EVEN : COLORS.NODE_BORDER_ODD,
+      highlight: {
+        background: COLORS.NODE_HIGHLIGHT_BG,
+        border:     COLORS.NODE_HIGHLIGHT_BORDER,
+      },
+      hover: {
+        background: COLORS.NODE_HIGHLIGHT_BG,
+        border:     COLORS.NODE_HIGHLIGHT_BORDER,
+      },
+    };
+  }
+
+  // ── Resaltar nodo y sus relaciones ──
   function showRelations(id) {
-    const parents = _getAllParents(id, allSubs); // ancestors
-    const children = _getDirectChildren(id, allSubs); // direct children
-    const relatedNodes = new Set([id, ...parents, ...children]);
+    const parents  = _getAllParents(id, allSubs);
+    const children = _getDirectChildren(id, allSubs);
 
+    // Actualizar estilos de nodos
     const nodeUpdates = nodesDs.map((node) => {
-      if (String(node.id).startsWith("title-sem-")) return { id: node.id };
+      if (isSemesterTitle(node.id)) return { id: node.id };
 
-      if (node.id === id) return { id: node.id, ...NODE_STYLE_HOVER };
-      if (parents.has(node.id)) return { id: node.id, ...NODE_STYLE_PARENT };
-      if (children.has(node.id)) return { id: node.id, ...NODE_STYLE_CHILD };
+      if (node.id === id)           return { id: node.id, ...NODE_STYLE_HOVER };
+      if (parents.has(node.id))     return { id: node.id, ...NODE_STYLE_PARENT };
+      if (children.has(node.id))    return { id: node.id, ...NODE_STYLE_CHILD };
 
       return { id: node.id, ...NODE_STYLE_DEFAULT_FADED };
     });
 
+    // Actualizar colores de aristas
     const edgeUpdates = edgesDs.map((edge) => {
-      const fromRelated = relatedNodes.has(edge.from);
-      const toRelated = relatedNodes.has(edge.to);
-      return {
-        id: edge.id,
-        hidden: !(fromRelated && toRelated),
-      };
+      const fromInParents  = parents.has(edge.from);
+      const toInParents    = parents.has(edge.to);
+      const toIsHovered    = edge.to   === id;
+      const fromIsHovered  = edge.from === id;
+      const toInChildren   = children.has(edge.to);
+
+      // Arista dentro de la cadena de pre-requisitos → verde
+      if (fromInParents && (toInParents || toIsHovered)) {
+        return {
+          id: edge.id,
+          hidden: false,
+          color: {
+            color:     COLORS.EDGE_PARENT_COLOR,
+            highlight: COLORS.EDGE_PARENT_COLOR,
+            hover:     COLORS.EDGE_PARENT_COLOR,
+            inherit:   false,
+            opacity:   1,
+          },
+          width: 3.2,
+          shadow: {
+            enabled: true,
+            color: "rgba(34, 197, 94, 0.35)",
+            size: 10,
+            x: 0,
+            y: 2,
+          },
+        };
+      }
+
+      // Arista desde el nodo seleccionado hacia sus hijos → azul
+      if (fromIsHovered && toInChildren) {
+        return {
+          id: edge.id,
+          hidden: false,
+          color: {
+            color:     COLORS.EDGE_CHILD_COLOR,
+            highlight: COLORS.EDGE_CHILD_COLOR,
+            hover:     COLORS.EDGE_CHILD_COLOR,
+            inherit:   false,
+            opacity:   1,
+          },
+          width: 3.2,
+          shadow: {
+            enabled: true,
+            color: "rgba(59, 130, 246, 0.35)",
+            size: 10,
+            x: 0,
+            y: 2,
+          },
+        };
+      }
+
+      // Arista no relacionada → ocultar
+      return { id: edge.id, hidden: true };
     });
 
     nodesDs.update(nodeUpdates.filter((u) => Object.keys(u).length > 1));
     edgesDs.update(edgeUpdates);
   }
 
+  // ── Resetear todos los estilos al estado original ──
   function resetGraphStyles() {
     const allNodeUpdates = nodesDs.map((node) => {
       if (isSemesterTitle(node.id)) return { id: node.id };
-      return { id: node.id, ...NODE_STYLE_BASE, opacity: 1 };
+      return {
+        id: node.id,
+        ...NODE_STYLE_BASE,
+        color: _originalColor(node.id) || undefined,
+        opacity: 1,
+      };
     });
 
     const allEdgeUpdates = edgesDs.map((edge) => ({
       id: edge.id,
       hidden: false,
+      color: {
+        color:     COLORS.EDGE_NORMAL,
+        opacity:   COLORS.EDGE_OPACITY,
+        highlight: COLORS.EDGE_NORMAL,
+        hover:     COLORS.EDGE_NORMAL,
+        inherit:   false,
+      },
+      width: 2.3,
+      dashes: false,
+      shadow: {
+        enabled: false,
+      },
     }));
 
     nodesDs.update(allNodeUpdates.filter((u) => Object.keys(u).length > 1));
     edgesDs.update(allEdgeUpdates);
   }
+
+  // ── Tooltip flotante ──
+  function showTooltip(domX, domY, id) {
+    if (!tooltip) return;
+    const sub = allSubs[id];
+    if (!sub) return;
+
+    document.getElementById("tooltip-name").textContent = sub.name;
+
+    const badgeEl = document.getElementById("tooltip-badge");
+    const badge   = sub.badge || "OBL";
+    badgeEl.textContent = badge;
+    badgeEl.className   = `tooltip-badge badge-${badge}`;
+
+    document.getElementById("tooltip-credits").textContent = `${sub.credits} cr.`;
+    document.getElementById("tooltip-hours").textContent   = `${sub.weekly_hours}h/sem`;
+
+    // Posicionar evitando que se salga de la ventana
+    const ttW = 240, ttH = 72;
+    let left = domX + 18;
+    let top  = domY - 10;
+    if (left + ttW > window.innerWidth  - 10) left = domX - ttW - 10;
+    if (top  + ttH > window.innerHeight - 10) top  = domY - ttH - 10;
+    if (top < 10) top = 10;
+
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top  = `${top}px`;
+    tooltip.classList.add("visible");
+  }
+
+  function hideTooltip() {
+    if (tooltip) tooltip.classList.remove("visible");
+  }
+
+  // Exponer referencia para poder resaltar desde fuera (chips del modal)
+  _showRelationsRef = showRelations;
 
   // ================= DESKTOP =================
   if (!isTouch) {
@@ -350,15 +541,23 @@ function _setupNetworkEvents(net, allSubs, nodesDs, edgesDs) {
       const id = params.node;
       if (isSemesterTitle(id)) return;
       showRelations(id);
+      const { x, y } = params.pointer.DOM;
+      showTooltip(x, y, id);
     });
 
-    net.on("blurNode", resetGraphStyles);
+    net.on("blurNode", () => {
+      resetGraphStyles();
+      hideTooltip();
+    });
 
     net.on("click", (params) => {
-      if (!params.nodes.length) return;
+      if (!params.nodes.length) {
+        // Click en fondo → resetear estilos si quedaron bloqueados
+        resetGraphStyles();
+        return;
+      }
       const id = params.nodes[0];
       if (isSemesterTitle(id)) return;
-
       _openModal(id);
     });
   }
@@ -369,18 +568,19 @@ function _setupNetworkEvents(net, allSubs, nodesDs, edgesDs) {
       if (!params.nodes.length) return;
       const id = params.nodes[0];
       if (isSemesterTitle(id)) return;
-
       showRelations(id);
     });
 
-    net.on("deselectNode", resetGraphStyles);
+    net.on("deselectNode", () => {
+      resetGraphStyles();
+      hideTooltip();
+    });
 
-    // long press → modal
+    // Long press → modal
     net.on("hold", (params) => {
       if (!params.nodes.length) return;
       const id = params.nodes[0];
       if (isSemesterTitle(id)) return;
-
       _openModal(id);
     });
   }
@@ -388,14 +588,14 @@ function _setupNetworkEvents(net, allSubs, nodesDs, edgesDs) {
 
 // ================= FUNCIONES PARA NODOS RELACIONADOS =================
 
-// Búsqueda recursiva para obtener todos los pre-requisitos de un nodo. Utiliza "depth first
-// search" para buscar los ancestros del nodo seleccionado.
+/**
+ * Búsqueda recursiva DFS de todos los ancestros (pre-requisitos) de un nodo.
+ */
 function _getAllParents(id, allSubs, visited = new Set()) {
   if (visited.has(id)) return new Set();
   visited.add(id);
 
   const parents = new Set();
-
   const subject = allSubs[id];
   if (!subject || !subject.pre) return parents;
 
@@ -408,7 +608,9 @@ function _getAllParents(id, allSubs, visited = new Set()) {
   return parents;
 }
 
-// Obtiene todos los nodos que tengan como pre-requisito al nodo seleccionado
+/**
+ * Obtiene los nodos que tienen como pre-requisito directo al nodo seleccionado.
+ */
 function _getDirectChildren(id, allSubs) {
   const children = new Set();
 
@@ -419,7 +621,9 @@ function _getDirectChildren(id, allSubs) {
   return children;
 }
 
-// Agrupa las materias por semestre
+/**
+ * Agrupa las materias por semestre.
+ */
 function _groupSubjectsBySemester(subjects, count) {
   const grouped = {};
   for (let i = 1; i <= count; i++) grouped[i] = {};
@@ -433,6 +637,8 @@ function _groupSubjectsBySemester(subjects, count) {
   return grouped;
 }
 
+// ================= MODAL (glassmorphism + animación) =================
+
 function _openModal(id) {
   const subject = allSubjects[id];
   if (!subject) return;
@@ -440,115 +646,147 @@ function _openModal(id) {
   const existing = document.getElementById("subject-modal-overlay");
   if (existing) existing.remove();
 
-  // ================= OVERLAY =================
+  // ── Overlay ──
   const overlay = document.createElement("div");
   overlay.id = "subject-modal-overlay";
+  overlay.className = "modal-overlay";
 
-  Object.assign(overlay.style, {
-    position: "fixed",
-    inset: "0",
-    background: "rgba(0,0,0,0.35)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: "9999",
-  });
-
-  // ================= MODAL =================
+  // ── Modal box ──
   const modal = document.createElement("div");
-
-  Object.assign(modal.style, {
-    width: "min(520px, 92vw)",
-    maxHeight: "85vh",
-    overflowY: "auto",
-    background: "#ffffff",
-    borderRadius: "10px",
-    padding: "20px 22px",
-    boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
-    fontFamily: "Inter, Arial, sans-serif",
-    position: "relative",
-  });
-
+  modal.className = "modal-content";
   modal.addEventListener("click", (e) => e.stopPropagation());
 
-  // ================= BOTÓN CERRAR =================
-  const close = document.createElement("button");
-  close.textContent = "✕";
+  // ── Header con degradado ──
+  const header = document.createElement("div");
+  header.className = "modal-header";
 
-  Object.assign(close.style, {
-    position: "absolute",
-    top: "8px",
-    right: "10px",
-    border: "none",
-    background: "transparent",
-    fontSize: "18px",
-    cursor: "pointer",
-    color: "#374151",
-  });
+  const badgeRow = document.createElement("div");
+  badgeRow.className = "modal-badge-row";
 
-  close.onclick = () => overlay.remove();
+  const typeBadge = document.createElement("span");
+  typeBadge.className = "modal-type-badge";
+  typeBadge.textContent = subject.badge || "OBL";
 
-  // ================= CONTENIDO =================
+  const semBadge = document.createElement("span");
+  semBadge.className = "modal-sem-badge";
+  semBadge.textContent = `Semestre ${subject.semester}`;
+
+  badgeRow.append(typeBadge, semBadge);
 
   const title = document.createElement("h2");
+  title.className = "modal-title";
   title.textContent = subject.name;
 
-  Object.assign(title.style, {
-    margin: "0 0 14px 0",
-    fontSize: "20px",
-    color: "#111827",
-  });
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "modal-close";
+  closeBtn.textContent = "✕";
+  closeBtn.setAttribute("aria-label", "Cerrar");
+  closeBtn.onclick = () => overlay.remove();
 
-  function createRow(label, value) {
-    const row = document.createElement("div");
-    row.innerHTML = `<strong>${label}:</strong> ${value ?? "-"}`;
+  header.append(badgeRow, title, closeBtn);
 
-    Object.assign(row.style, {
-      marginBottom: "6px",
-      fontSize: "14px",
-      color: "#374151",
-    });
+  // ── Body ──
+  const body = document.createElement("div");
+  body.className = "modal-body";
 
-    return row;
+  // Stats cards
+  const statsRow = document.createElement("div");
+  statsRow.className = "modal-stats-row";
+
+  function makeStatCard(value, label) {
+    const card = document.createElement("div");
+    card.className = "modal-stat-card";
+
+    const val = document.createElement("div");
+    val.className = "modal-stat-value";
+    val.textContent = value ?? "–";
+
+    const lbl = document.createElement("div");
+    lbl.className = "modal-stat-label";
+    lbl.textContent = label;
+
+    card.append(val, lbl);
+    return card;
   }
 
-  const semester = createRow("Semestre", subject.semester);
-  const credits = createRow("Créditos", subject.credits);
-  const weekly = createRow("Horas semanales", subject.weekly_hours);
-  const required = createRow("Créditos requeridos", subject.required_credits);
+  statsRow.appendChild(makeStatCard(subject.credits, "Créditos"));
+  statsRow.appendChild(makeStatCard(subject.weekly_hours, "Horas/sem"));
+  if (subject.required_credits > 0) {
+    statsRow.appendChild(makeStatCard(subject.required_credits, "Cred. req."));
+  }
+  body.appendChild(statsRow);
 
-  const desc = document.createElement("div");
-  desc.innerHTML = `<strong>Descripción:</strong> ${subject.desc ?? "-"}`;
+  // Descripción
+  if (subject.desc) {
+    const descTitle = document.createElement("div");
+    descTitle.className = "modal-section-title";
+    descTitle.textContent = "Descripción";
 
-  Object.assign(desc.style, {
-    marginTop: "10px",
-    fontSize: "14px",
-    lineHeight: "1.4",
-    color: "#1f2937",
-  });
+    const desc = document.createElement("p");
+    desc.className = "modal-desc";
+    desc.textContent = subject.desc;
 
-  // ensamblar
-  modal.appendChild(close);
-  modal.appendChild(title);
-  modal.appendChild(semester);
-  modal.appendChild(credits);
-  modal.appendChild(weekly);
-  modal.appendChild(required);
-  modal.appendChild(desc);
+    body.append(descTitle, desc);
+  }
 
+  // Pre-requisitos como chips clicables
+  const prereqTitle = document.createElement("div");
+  prereqTitle.className = "modal-section-title";
+  prereqTitle.textContent = "Pre-requisitos";
+  body.appendChild(prereqTitle);
+
+  if (subject.pre && subject.pre.length > 0) {
+    const chipsWrap = document.createElement("div");
+    chipsWrap.className = "modal-chips";
+
+    for (const prereqId of subject.pre) {
+      const prereqSub = allSubjects[prereqId];
+      if (!prereqSub) continue;
+
+      const chip = document.createElement("button");
+      chip.className = "prereq-chip";
+      chip.textContent = prereqSub.name;
+      chip.title = `Ver ${prereqSub.name} en el grafo`;
+
+      chip.onclick = () => {
+        overlay.remove();
+        // Pequeño delay para que el modal cierre antes de resaltar
+        setTimeout(() => highlightNode(prereqId), 80);
+      };
+
+      chipsWrap.appendChild(chip);
+    }
+
+    body.appendChild(chipsWrap);
+  } else {
+    const noPre = document.createElement("p");
+    noPre.className = "modal-no-prereqs";
+    noPre.textContent = "Sin pre-requisitos.";
+    body.appendChild(noPre);
+  }
+
+  // Advertencia de créditos requeridos
+  if (subject.required_credits > 0) {
+    const warning = document.createElement("div");
+    warning.className = "modal-warning";
+    warning.innerHTML = `Requiere tener aprobados <strong>${subject.required_credits} créditos</strong> antes de cursarla.`;
+    body.appendChild(warning);
+  }
+
+  // Ensamblar
+  modal.append(header, body);
   overlay.appendChild(modal);
   document.body.appendChild(overlay);
 
-  // cerrar al hacer click fuera
+  // Cerrar al hacer clic fuera del modal
   overlay.addEventListener("click", () => overlay.remove());
 
-  // cerrar con ESC
+  // Cerrar con ESC
   const escHandler = (e) => {
     if (e.key === "Escape") {
       overlay.remove();
       document.removeEventListener("keydown", escHandler);
     }
   };
-
   document.addEventListener("keydown", escHandler);
 }

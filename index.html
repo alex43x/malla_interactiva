@@ -1,32 +1,216 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
-  <title>Ejemplo Grafo Materias</title>
-  <style>
-    #graph-container {
-      width: 100vw;
-      height: 100vh;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malla Interactiva – Plan de Estudios</title>
+  <meta name="description" content="Visualización interactiva del plan de estudios universitario. Explorá las materias, sus pre-requisitos y las dependencias por semestre.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/src/style.css">
 
   <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
+
 <body>
 
-  <h2>Plan de estudios - Ingeniería Informática</h2>
-  <div id="graph-container"></div>
+  <!-- ===== HEADER ===== -->
+  <header id="app-header">
+    <div id="header-left">
+      <div id="header-text">
+        <h1 id="career-name">Cargando...</h1>
+        <div id="career-stats">
+          <span class="stat-pill" id="stat-semesters"></span>
+          <span class="stat-pill" id="stat-credits"></span>
+          <span class="stat-pill" id="stat-subjects"></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="selector-wrapper">
+      <span id="selector-label">Carrera</span>
+      <select id="career-selector" aria-label="Seleccionar carrera">
+        <option value="">Cargando...</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- ===== GRAPH ===== -->
+  <div id="graph-container">
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <div id="loading-text">Cargando malla...</div>
+    </div>
+  </div>
+
+  <!-- ===== TOOLTIP FLOTANTE ===== -->
+  <div id="node-tooltip" role="tooltip">
+    <div id="tooltip-name"></div>
+    <div class="tooltip-meta">
+      <span class="tooltip-badge" id="tooltip-badge"></span>
+      <span class="tooltip-chip"  id="tooltip-credits"></span>
+      <span class="tooltip-chip"  id="tooltip-hours"></span>
+    </div>
+  </div>
+
+  <!-- ===== LEYENDA ===== -->
+  <nav id="graph-legend" aria-label="Leyenda del grafo">
+    <div id="legend-title">Leyenda</div>
+
+    <div class="legend-section">
+      <div class="legend-section-title">Semestres</div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#2563eb;border:1px solid #60a5fa"></div>
+        Impares
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#0ea5e9;border:1px solid #7dd3fc"></div>
+        Pares
+      </div>
+    </div>
+
+    <div class="legend-sep"></div>
+
+    <div class="legend-section">
+      <div class="legend-section-title">Al hacer hover</div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--fuchsia-300);border:1.5px solid var(--fuchsia-600)"></div>
+        Seleccionado
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--green-300);border:1.5px solid var(--green-500)"></div>
+        Pre-requisito
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--blue-300);border:1.5px solid var(--blue-500)"></div>
+        Desbloquea
+      </div>
+    </div>
+
+    <div class="legend-sep"></div>
+
+    <div class="legend-section">
+      <div class="legend-section-title">Aristas</div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:var(--green-500)"></div>
+        Cadena de pre-reqs
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:var(--blue-500)"></div>
+        Lo que desbloquea
+      </div>
+    </div>
+
+    <div class="legend-sep"></div>
+
+    <div class="legend-section">
+      <div class="legend-section-title">Tipo</div>
+      <div class="legend-item">
+        <span class="tooltip-badge badge-OBL">OBL</span>
+        Obligatoria
+      </div>
+      <div class="legend-item">
+        <span class="tooltip-badge badge-ELE">ELE</span>
+        Electiva
+      </div>
+      <div class="legend-item">
+        <span class="tooltip-badge badge-OPT">OPT</span>
+        Optativa
+      </div>
+    </div>
+  </nav>
 
   <script src="/src/graph_lib.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-        // Este es el JSON que normalmente viene de la API del backend
-        const data = await fetch('/src/data/example-curriculum.json').then(r => r.json())
+    const CAREER_FILES = [
+      'IAE', 'IEK-CI', 'IEK-EM', 'IEK-ME', 'IEK-TI',
+      'IEL', 'IEN', 'IIN', 'IMK', 'LCA', 'LCIK-AS', 'LCIK-PC'
+    ];
 
-        // Renderizar el grafo en el contenedor con id "graph"
+    let currentCareerFile = 'IIN';
+
+    // ── Actualizar el header con datos de la carrera ──
+    function updateHeader(data) {
+      document.getElementById('career-name').textContent = data.career.name;
+      document.getElementById('stat-semesters').textContent =
+        `${data.career.totalSemesters} semestres`;
+
+      const creditsEl = document.getElementById('stat-credits');
+      creditsEl.textContent = data.career.totalCredits
+        ? `${data.career.totalCredits} créditos`
+        : '';
+
+      const subjectCount = Object.keys(data.subjects).length;
+      document.getElementById('stat-subjects').textContent =
+        `${subjectCount} materias`;
+    }
+
+    // ── Mostrar / ocultar spinner ──
+    function showLoading(visible) {
+      document.getElementById('loading-overlay')
+        .classList.toggle('hidden', !visible);
+    }
+
+    // ── Cargar una carrera y re-renderizar el grafo ──
+    async function loadCareer(fileId) {
+      showLoading(true);
+      try {
+        const data = await fetch(`/src/data/${fileId}.json`).then(r => r.json());
         prepareGraphData(data);
-        renderGraph("graph-container");
-    })
+        renderGraph('graph-container');
+        updateHeader(data);
+      } catch (e) {
+        console.error('Error al cargar la carrera:', e);
+        document.getElementById('loading-text').textContent = 'Error al cargar la malla.';
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    // ── Poblar el selector con los nombres reales de cada carrera ──
+    async function initCareerSelector() {
+      const selector = document.getElementById('career-selector');
+
+      const results = await Promise.allSettled(
+        CAREER_FILES.map(id =>
+          fetch(`/src/data/${id}.json`)
+            .then(r => r.json())
+            .then(d => ({ id, name: d.career.name }))
+        )
+      );
+
+      const careers = results
+        .filter(r => r.status === 'fulfilled')
+        .map(r => r.value)
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      selector.innerHTML = careers
+        .map(c =>
+          `<option value="${c.id}"${c.id === currentCareerFile ? ' selected' : ''}>${c.name}</option>`
+        )
+        .join('');
+
+      selector.addEventListener('change', (e) => {
+        currentCareerFile = e.target.value;
+        loadCareer(currentCareerFile);
+      });
+    }
+
+    // ── Inicialización ──
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Cargar carrera por defecto rápido, poblar selector en paralelo
+      const defaultFetch = fetch(`/src/data/${currentCareerFile}.json`).then(r => r.json());
+      initCareerSelector(); // no esperamos — se hace en background
+
+      const data = await defaultFetch;
+      prepareGraphData(data);
+      renderGraph('graph-container');
+      updateHeader(data);
+      showLoading(false);
+    });
   </script>
 
 </body>
